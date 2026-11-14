@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Inter;font-weight:900;src:url(fonts/Inter-900.ttf)}
+@font-face{font-family:Inter;font-weight:700;src:url(fonts/Inter-700.ttf)}
+@font-face{font-family:Fraunces;font-weight:900;src:url(fonts/Fraunces-900.ttf)}
+@font-face{font-family:Fraunces;font-weight:700;src:url(fonts/Fraunces-700.ttf)}
+@font-face{font-family:Anton;src:url(fonts/Anton.ttf)}
+:root{--g:#A6F08A;--gd:#3D7A45;--c:#FF6A52;--cr:#F6F1E6;--bg:#0B1410}
+html,body{margin:0;width:1080px;height:1920px;background:transparent;overflow:hidden}
+#stage{position:absolute;inset:0;font-family:Inter;color:var(--cr)}
+.el{position:absolute;left:0;top:0;will-change:transform,opacity;opacity:0}
+.full{position:absolute;inset:0;opacity:0}
+.pill{display:inline-block;font:900 40px Inter;letter-spacing:.06em;padding:16px 30px;border-radius:999px;white-space:nowrap}
+.card{background:rgba(9,16,13,.86);border:3px solid rgba(255,255,255,.18);border-radius:34px;padding:30px 38px;backdrop-filter:blur(8px);box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.k{font:900 30px Inter;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.big{font:900 96px Fraunces;line-height:1}
+.mid{font:700 34px Inter;opacity:.8;margin-top:8px}
+/* napisy */
+#cap{position:absolute;left:60px;right:60px;top:1330px;text-align:center;font:900 84px/1.12 Inter;letter-spacing:-.01em}
+#cap span{display:inline-block;margin:0 10px;padding:2px 14px;border-radius:16px;color:#fff;
+  text-shadow:0 6px 0 rgba(0,0,0,.55),0 0 30px rgba(0,0,0,.6);-webkit-text-stroke:3px rgba(0,0,0,.35);paint-order:stroke fill}
+#cap span.on{background:var(--g);color:#0B1410;text-shadow:none;-webkit-text-stroke:0}
+#bar{position:absolute;left:0;top:0;height:8px;background:var(--g);box-shadow:0 0 20px var(--g)}
+#wm{position:absolute;left:54px;top:150px;font:700 34px Fraunces;color:#fff;opacity:.9;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+#wm b{color:var(--g);font-weight:700}
+.counter{font:900 150px Anton;letter-spacing:.01em;line-height:1;text-shadow:0 14px 50px rgba(0,0,0,.7)}
+.stamp{font:900 72px Inter;color:#0B1410;background:var(--g);padding:14px 34px;border-radius:18px;letter-spacing:.02em}
+.grid{background:radial-gradient(ellipse at 50% 40%,#16291F 0%,#0B1410 70%);}
+.grid:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.05) 2px,transparent 2px);background-size:90px 90px}
+.de{display:flex;gap:0;width:170px;height:22px;border-radius:6px;overflow:hidden}.de i{flex:1}.de i:nth-child(1){background:#111}.de i:nth-child(2){background:#D0261D}.de i:nth-child(3){background:#F2C230}
+.cn{width:110px;height:74px;background:#DE2910;border-radius:8px;position:relative}.cn:after{content:"★";position:absolute;left:12px;top:2px;color:#FFDE00;font-size:40px}
+.loc{font:900 36px Inter;letter-spacing:.1em}
+</style></head><body><div id="stage">
+<div id="bar"></div>
+<div id="wm">f<b>o</b>unders.pl</div>
+<div id="cap"></div>
+</div>
+<script src="tl.js"></script>
+<script>
+const S = {}; for (const s of TL.segs) S[s.key] = s;
+const W = 1080, H = 1920;
+const clamp = (x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const eo = x=>1-Math.pow(1-clamp(x),3);
+const eb = x=>{x=clamp(x)-1;return x*x*(2.7*x+1.7)+1};
+const ex = x=>{x=clamp(x);return x===1?1:1-Math.pow(2,-10*x)};
+const nrm = w=>w.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/ł/g,'l').replace(/[^a-z0-9]/g,'');
+function wt(k, pre, nth=0){ const s=S[k]; let c=0; for(const w of s.words){ if(nrm(w[0]).startsWith(pre)){ if(c===nth) return w[1]; c++; } } console.log('MISS',k,pre); return s.start; }
+const end = k=>S[k].start+S[k].dur;
+const stage = document.getElementById('stage');
+const EL = [];
+// el: html, x,y (center), t0,t1, anim
+function add(html, x, y, t0, t1, o={}){
+  const d=document.createElement('div'); d.className=o.full?'full':'el'; d.innerHTML=html; stage.insertBefore(d, document.getElementById('cap'));
+  EL.push({d,x,y,t0,t1,anim:o.anim||'pop',rot:o.rot||0,out:o.out??0.18,full:o.full,upd:o.upd}); return d;
+}
+// ---------------- SCENY ----------------
+const fm = n=>Math.round(n).toLocaleString('fr-FR').replace(/ | /g,' ');
+// V1: hak
+add(`<span class="pill" style="background:rgba(0,0,0,.55);color:#fff;border:2px solid rgba(255,255,255,.35)">CHINY <span style="color:var(--c)">vs</span> NIEMCY</span>`, 540, 300, -1, end('v1'), {anim:'down'});
+const tz = wt('v1','30'), tt = wt('v1','trzy');
+add(`<div style="text-align:center"><div class="counter" id="cnt">30 000 000 $</div><div class="mid" style="font-size:40px;opacity:.95;text-shadow:0 4px 20px #000">za jedną maszynę do tuneli</div></div>`, 540, 820, -1, end('v1'), {anim:'slam',
+  upd:(t,d)=>{const k=ex((t-tt+0.05)/0.7); const v=30e6-27e6*k; const c=d.querySelector('#cnt'); c.textContent=fm(v)+' $'; c.style.color=k>0.5?'var(--g)':'#fff';}});
+add(`<div class="stamp">10× TANIEJ</div>`, 540, 1060, tt+0.45, end('v1'), {anim:'slam', rot:-6});
+// V2: Niemcy trzymali cenę
+const v2 = S.v2.start, tch = wt('v2','chinczycy'), tbf = wt('v2','bartek');
+add(`<div class="grid" style="position:absolute;inset:0"></div>
+ <svg width="1080" height="1920" style="position:absolute;left:0;top:0"><defs><linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#F6F1E6" stop-opacity=".3"/><stop offset="1" stop-color="#FF6A52"/></linearGradient></defs>
+ <polyline id="chart" points="120,1150 300,1110 460,1080 610,980 760,900 900,720" fill="none" stroke="url(#gl)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1200" stroke-dashoffset="1200"/>
+ <circle id="dot" cx="900" cy="720" r="0" fill="#FF6A52"/></svg>
+ <div style="position:absolute;left:120px;top:400px"><div class="de"><i></i><i></i><i></i></div>
+ <div class="k" style="margin-top:22px">Niemcy · maszyny do tuneli</div>
+ <div style="font:900 120px/1 Fraunces;margin-top:16px">Cena?</div>
+ <div style="font:900 120px/1 Fraunces;color:var(--c)">Bo mogli.</div></div>
+ <div style="position:absolute;left:120px;top:1190px;font:700 34px Inter;opacity:.6">monopol technologiczny →</div>`, 0,0, v2, tch-0.05, {full:true, anim:'fade',
+  upd:(t,d)=>{const k=eo((t-v2-0.2)/1.4); d.querySelector('#chart').setAttribute('stroke-dashoffset',1200*(1-k)); d.querySelector('#dot').setAttribute('r', k>0.95?Math.max(0,22*eb((t-v2-1.5)/0.3)):0);}});
+add(`<div class="card" style="text-align:center"><div style="display:flex;gap:22px;align-items:center;justify-content:center"><div class="cn"></div><div class="k">Chiny</div></div><div style="font:900 78px/1.05 Fraunces;margin-top:14px">„Zrobimy<br>to sami”</div></div>`, 540, 900, tch+0.1, tbf-0.1, {anim:'up'});
+add(`<div style="text-align:center"><div class="loc" style="color:var(--g)">SHENZHEN · CHINY</div>
+ <div style="font:900 132px/1 Fraunces;margin-top:24px;text-shadow:0 10px 40px rgba(0,0,0,.8)">Bartek<br>Ferenc</div>
+ <div class="pill" style="background:var(--c);color:#0B1410;margin-top:34px;font-size:38px">WŁAŚNIE WRÓCIŁ Z CHIN</div></div>`, 540, 800, tbf, end('v2'), {anim:'up'});
+// C2
+const lower = `<div class="card" style="padding:22px 32px;border-color:var(--g)"><div style="font:900 50px Fraunces">Bartek Ferenc</div><div class="k" style="font-size:24px;color:var(--g);margin-top:6px">właściciel Sembot</div></div>`;
+add(lower, 330, 1150, S.c2.start+0.15, S.c2.start+3.2, {anim:'left'});
+add(`<div class="card" style="text-align:center;width:380px"><div style="display:flex;justify-content:center"><div class="de"><i></i><i></i><i></i></div></div><div class="k" style="margin-top:14px">model niemiecki</div><div style="font:900 64px Fraunces;margin-top:6px">max <span style="color:var(--c)">ZYSK</span></div></div>`, 270, 1080, wt('c2','zysku')-0.1, end('c2'), {anim:'pop'});
+add(`<div class="card" style="text-align:center;width:420px;border-color:var(--g)"><div style="display:flex;justify-content:center"><div class="cn" style="width:80px;height:54px"></div></div><div class="k" style="margin-top:14px">model chiński</div><div style="font:900 46px Fraunces;margin-top:10px">max <span style="color:var(--g)">DOSTĘPNOŚĆ</span></div></div>`, 765, 1080, wt('c2','dostepnosci')-0.1, end('c2'), {anim:'pop'});
+// V3
+add(`<span class="pill" style="background:rgba(0,0,0,.6);color:#fff;border:2px solid var(--g)">TO NIE TYLKO MASZYNY</span>`, 540, 330, S.v3.start+0.1, end('v3'), {anim:'down'});
+add(`<div style="font:900 190px/0.95 Anton;text-align:center;text-shadow:0 20px 60px #000">TO SAMO<br><span style="color:var(--g)">W AI</span></div>`, 540, 860, wt('v3','widac')-0.1, end('v3'), {anim:'slam'});
+// C3
+const hideFrom = S.c3.start+4.30, hideTo = S.c3.start+6.23;
+add(lower, 330, 1150, S.c3.start+0.15, S.c3.start+2.6, {anim:'left'});
+add(`<div class="card" style="text-align:center;width:400px;border-color:var(--g)"><div class="k" style="color:var(--g)">DeepSeek · Chiny</div><div class="big" style="margin-top:10px">2,5 $</div><div class="mid">za 1000 zadań</div></div>`, 290, 1020, wt('c3','2'), end('c3'), {anim:'pop'});
+add(`<div class="card" style="text-align:center;width:400px;border-color:var(--c)"><div class="k" style="color:var(--c)">Opus · USA</div><div class="big" style="margin-top:10px">150 $</div><div class="mid">za 1000 zadań</div></div>`, 790, 1020, wt('c3','150'), end('c3'), {anim:'pop'});
+add(`<div style="font:900 260px Anton;color:var(--g);text-shadow:0 0 60px rgba(166,240,138,.5),0 20px 60px #000">×60</div>`, 540, 700, wt('c3','60'), end('c3'), {anim:'slam', rot:-4});
+// V4
+const tpp = wt('v4','w',2) ;
+add(`<span class="pill" style="background:#d9d4c7;color:#2a2a2a">MUZEUM NAUKI · EUROPA</span>`, 540, 330, S.v4.start+0.2, tpp-0.05, {anim:'down'});
+add(`<span class="pill" style="background:var(--c);color:#0B1410">MUZEUM NAUKI · CHINY</span>`, 540, 330, tpp, end('v4'), {anim:'down'});
+// C4
+add(`<span class="pill" style="background:#d9d4c7;color:#2a2a2a;font-size:50px">PRZESZŁOŚĆ</span>`, 540, 1050, wt('c4','przeszlosc'), wt('c4','a')-0.05, {anim:'pop'});
+add(`<span class="pill" style="background:var(--g);color:#0B1410;font-size:50px">PRZYSZŁOŚĆ</span>`, 540, 1050, wt('c4','przyszlosc')-0.05, end('c4'), {anim:'pop'});
+// V5
+const tA = wt('v5','a'), tMind = wt('v5','mind');
+add(`<div class="card" style="text-align:center;width:760px"><div style="display:flex;gap:26px;align-items:center;justify-content:center"><div style="width:110px;height:78px;background:#FF2D2D;border-radius:22px;position:relative"><div style="position:absolute;left:42px;top:20px;border-left:36px solid #fff;border-top:20px solid transparent;border-bottom:20px solid transparent"></div></div><div style="text-align:left"><div class="k">Pełna rozmowa</div><div style="font:900 56px Fraunces">kanał Founders</div></div></div><div class="mid" style="margin-top:18px">Bartek Ferenc o Chinach, robotach i AI</div></div>`, 540, 900, S.v5.start+0.1, tA-0.1, {anim:'up'});
+add(`<div class="card" style="font:900 88px/1.04 Fraunces;text-align:center;padding:40px 50px">Co z tym zrobić<br>jako <span style="color:var(--g)">polski founder?</span></div>`, 540, 760, tA, tMind-0.35, {anim:'up'});
+add(`<div class="grid" style="position:absolute;inset:0"></div>
+ <img src="logo_color.png" id="lg" style="position:absolute;left:140px;top:560px;width:800px">
+ <div style="position:absolute;left:0;right:0;top:960px;text-align:center"><span class="pill" style="background:var(--g);color:#0B1410;font-size:54px" id="dt">24–25 LISTOPADA · WARSZAWA</span></div>
+ <div id="url" style="position:absolute;left:0;right:0;top:1110px;text-align:center;font:700 62px Fraunces">foundersmind.pl</div>
+ <div id="kk" class="k" style="position:absolute;left:0;right:0;top:440px;text-align:center;color:var(--g)">pogadajmy na żywo</div>`, 0,0, tMind-0.35, TL.total+1, {full:true, anim:'fade',
+  upd:(t,d)=>{const b=tMind-0.35; const l=d.querySelector('#lg'); const k=eb((t-b-0.1)/0.5); l.style.transform=`scale(${0.6+0.4*k})`; l.style.opacity=clamp((t-b-0.1)/0.2);
+   d.querySelector('#dt').style.opacity=clamp((t-b-1.0)/0.3); d.querySelector('#dt').style.transform=`translateY(${30*(1-eo((t-b-1.0)/0.4))}px)`;
+   d.querySelector('#url').style.opacity=clamp((t-b-1.6)/0.3); d.querySelector('#kk').style.opacity=clamp((t-b-0.3)/0.3);}});
+// ---------------- NAPISY ----------------
+const CH=[]; for(const s of TL.segs){ let cur=[]; for(const w of s.words){ cur.push(w); const tl=cur.reduce((a,x)=>a+x[0].length,0);
+  if(cur.length>=3||/[.,?!:]$/.test(w[0])||tl>14){CH.push(cur);cur=[];} } if(cur.length)CH.push(cur); }
+const cap=document.getElementById('cap'); let lastCh=null;
+function caption(t){
+  // nie zasłaniaj plansz pełnoekranowych końcówki
+  const ch = CH.find(c=>t>=c[0][1]-0.04 && t<c[c.length-1][2]+0.1);
+  if(!ch){cap.innerHTML='';lastCh=null;return;}
+  if(ch!==lastCh){ cap.innerHTML=ch.map(w=>`<span>${w[0]}</span>`).join(''); lastCh=ch; cap._t0=ch[0][1]; }
+  const sp=cap.children; ch.forEach((w,i)=>sp[i].classList.toggle('on', t>=w[1]-0.03 && t<w[2]+0.05));
+  const k=eb((t-cap._t0)/0.18); cap.style.transform=`scale(${0.85+0.15*k})`; cap.style.opacity=clamp((t-cap._t0)/0.08);
+  cap.style.top = (t>=tMind-0.35)? '1400px' : '1330px';
+}
+// ---------------- RENDER ----------------
+window.render = function(t){
+  document.getElementById('bar').style.width = (W*t/TL.total)+'px';
+  for(const e of EL){
+    const vis = t>=e.t0 && t<e.t1+e.out; e.d.style.display = vis?'block':'none'; if(!vis) continue;
+    if(e.upd) e.upd(t, e.d);
+    if(e.full){ e.d.style.opacity = Math.min(clamp((t-e.t0)/0.12), 1-clamp((t-e.t1)/e.out)); continue; }
+    const p=(t-e.t0), o=1-clamp((t-e.t1)/e.out); let s=1,dx=0,dy=0,a=1;
+    if(e.anim==='pop'){ s=0.5+0.5*eb(p/0.32); a=clamp(p/0.1); }
+    else if(e.anim==='slam'){ s=1+1.4*(1-eo(p/0.22)); a=clamp(p/0.08); }
+    else if(e.anim==='up'){ dy=80*(1-eo(p/0.4)); a=clamp(p/0.25); }
+    else if(e.anim==='down'){ dy=-60*(1-eo(p/0.4)); a=clamp(p/0.25); }
+    else if(e.anim==='left'){ dx=-120*(1-eo(p/0.4)); a=clamp(p/0.25); }
+    a*=o; s*=(0.9+0.1*o);
+    const r=e.d.getBoundingClientRect ? null:null;
+    e.d.style.opacity=a; e.d.style.transform=`translate(-50%,-50%) translate(${e.x+dx}px,${e.y+dy}px) scale(${s}) rotate(${e.rot}deg)`;
+    e.d.style.left='0'; e.d.style.top='0';
+  }
+  caption(t);
+};
+</script></body></html>

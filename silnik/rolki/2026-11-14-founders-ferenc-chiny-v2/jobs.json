@@ -1,0 +1,68 @@
+[
+ {
+  "name": "factory",
+  "req": {
+   "model": "google/veo-3.1-fast",
+   "duration": 6,
+   "resolution": "1080p",
+   "aspect_ratio": "9:16",
+   "generate_audio": false,
+   "prompt": "Slow drone shot gliding through a gigantic modern Chinese heavy-machinery factory hall where a huge brand-new tunnel boring machine is being assembled, robotic welding arms throwing bright sparks, workers in hard hats, clean white LED lighting, sense of enormous scale, photorealistic, cinematic documentary film look, shallow depth of field, natural film grain, vertical 9:16 composition. No text, no captions, no logos."
+  }
+ },
+ {
+  "name": "shenzhen",
+  "req": {
+   "model": "google/veo-3.1-fast",
+   "duration": 6,
+   "resolution": "1080p",
+   "aspect_ratio": "9:16",
+   "generate_audio": false,
+   "prompt": "Night aerial drone shot flying forward between the futuristic skyscrapers of Shenzhen, China, LED facades glowing, light trails of traffic on wide highways below, slight haze, epic scale, photorealistic, cinematic documentary film look, shallow depth of field, natural film grain, vertical 9:16 composition. No text, no captions, no logos."
+  }
+ },
+ {
+  "name": "datacenter",
+  "req": {
+   "model": "google/veo-3.1-fast",
+   "duration": 4,
+   "resolution": "1080p",
+   "aspect_ratio": "9:16",
+   "generate_audio": false,
+   "prompt": "Camera tracks smoothly along an aisle of glowing server racks in a modern data center, blinking blue and white status lights, cool reflections on the polished floor, photorealistic, cinematic documentary film look, shallow depth of field, natural film grain, vertical 9:16 composition. No text, no captions, no logos."
+  }
+ },
+ {
+  "name": "pendulum",
+  "req": {
+   "model": "google/veo-3.1-fast",
+   "duration": 6,
+   "resolution": "1080p",
+   "aspect_ratio": "9:16",
+   "generate_audio": false,
+   "prompt": "Inside an old dusty European science museum with faded wooden display cases, a bored child slowly pushes a brass pendulum hanging on a long wire, muted desaturated colors, soft grey window light, quiet melancholic mood, photorealistic, cinematic documentary film look, shallow depth of field, natural film grain, vertical 9:16 composition. No text, no captions, no logos."
+  }
+ },
+ {
+  "name": "pingpong",
+  "req": {
+   "model": "google/veo-3.1-fast",
+   "duration": 6,
+   "resolution": "1080p",
+   "aspect_ratio": "9:16",
+   "generate_audio": false,
+   "prompt": "Bright futuristic science museum in China, an excited ten-year-old child plays fast table tennis against a sleek white industrial robot arm holding a paddle, the robot returns the ball precisely, a group of amazed kids watches, vivid saturated colors, energetic mood, photorealistic, cinematic documentary film look, shallow depth of field, natural film grain, vertical 9:16 composition. No text, no captions, no logos."
+  }
+ },
+ {
+  "name": "audience",
+  "req": {
+   "model": "google/veo-3.1-fast",
+   "duration": 4,
+   "resolution": "1080p",
+   "aspect_ratio": "9:16",
+   "generate_audio": false,
+   "prompt": "Large dark conference hall, warm stage lights and haze, an audience of entrepreneurs in their thirties stands up and applauds, camera slowly pushes in from behind the crowd toward the bright stage, photorealistic, cinematic documentary film look, shallow depth of field, natural film grain, vertical 9:16 composition. No text, no captions, no logos."
+  }
+ }
+]
